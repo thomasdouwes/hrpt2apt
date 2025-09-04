@@ -19,6 +19,8 @@ HRPT2APT probably only works on linux
 ```
 git clone https://github.com/thomasdouwes/hrpt2apt.git
 cd hrpt2apt
+mkdir build
+cmake ..
 make
 ```
 ### run

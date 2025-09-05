@@ -153,11 +153,13 @@ static struct argp_option argp_options[] = {
 
 static char argp_documentation[] =
     "Converts NOAA HRPT to NOAA APT with correct space/calibration data from HRPT.\n"
-    "Takes raw16(default) or packed dundee format HRPT.\n"
+    "Reader options are:\n"
+    "   raw16: HRPT format produced by SatDump and other software\n"
+    "   dundee: packed HRPT files from DSS such as those from the CEDA archive\n\n"
     "Can output APT as:\n"
     "   raw data: raw 8 bit values for each sample for use with GNU radio flowchart\n"
     "   PNG: output the APT image as a PNG without any signal processing\n"
-    "   WAV: outputs the APT as if it were decoded with an FM demod, can be used in most APT decoding software\n"
+    "   WAV: outputs the APT as if it were decoded with an FM demod, can be used in most APT decoding software\n\n"
     "   IQ: generate an FM modulated APT signal following the specifications of actual transmission\n"
     "Multiple output options can be specified\n"
     "Available AVHRR channels are:\n"

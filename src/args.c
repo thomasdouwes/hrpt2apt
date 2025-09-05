@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "defines.h"
 
+#include "hrpt_reader.h"
+
 // Stupid strcmp stack, but only called a few times
 int channel_from_string(char* buf)
 {
@@ -28,6 +30,18 @@ int channel_from_string(char* buf)
     return -1;
 }
 
+// TODO replace this with bsearch
+reader_info_t* reader_from_string(char* buf)
+{
+    if(!strcmp(buf, "raw16")) {
+        return &hrpt_reader_raw16;
+    } else if(!strcmp(buf, "dundee"))
+    {
+        return &hrpt_reader_dundee;
+    }
+    return NULL;
+}
+
 error_t parse_arg(int key, char* arg, struct argp_state* state)
 {
     arguments_t* arguments = (arguments_t*)state->input;
@@ -48,6 +62,10 @@ error_t parse_arg(int key, char* arg, struct argp_state* state)
             {
                 argp_error(state, "At least one output type must be specified");
             }
+            if(!arguments->reader)
+            {
+                argp_error(state, "No reader specified");
+            }
             break;
         case 'i':
             arguments->input_file = arg;
@@ -67,9 +85,6 @@ error_t parse_arg(int key, char* arg, struct argp_state* state)
         case 'q':
             arguments->output_file_iq = arg;
             argp_error(state, "IQ output not currently implemented");
-            break;
-        case 'd':
-            arguments->dundee_format = true;
             break;
         case 't':
             char* end;
@@ -108,6 +123,13 @@ error_t parse_arg(int key, char* arg, struct argp_state* state)
         case 'c':
             argp_error(state, "Terminator switching not currently implemented");
             break;
+        case 'R':
+            reader_info_t* reader = reader_from_string(arg);
+            if(!reader)
+            {
+                argp_error(state, "Invalid reader specified");
+            }
+            arguments->reader = reader;
         default:
             break;
     }
@@ -121,11 +143,11 @@ static struct argp_option argp_options[] = {
     {"wav", 'w', "OUTPUT_WAV", 0, "WAV output file"},
     {"output", 'o', "OUTPUT_WAV", OPTION_ALIAS, "Output file"},
     {"iq", 'q', "OUTPUT_IQ", 0, "IQ output file"},
-    {"dundee", 'd', 0, OPTION_ARG_OPTIONAL, "Decode input file as dundee HRPT format, this is a switch, it takes no arguments"},
     {"wxtoimg_timestamp", 't', "YEAR", 0, "Timestamp WAV file with end of pass from HRPT time for WXtoIMG. Takes year as argument"},
     {"channel_a", 'a', "CHANNEL", 0, "Channel to put on APT Channel A (default ch2)"},
     {"channel_b", 'b', "CHANNEL", 0, "Channel to put on APT Channel B (default ch4)"},
     {"channel_c", 'c', "CHANNEL", 0, "Channel to switch to when passing over daylight terminator, no switch if not specified"},
+    {"reader", 'R', "READER", 0, "Input file reader"},
     { 0 }
 };
 

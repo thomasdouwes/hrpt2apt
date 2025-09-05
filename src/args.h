@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "reader.h"
 
 typedef struct {
     char* input_file;
@@ -11,6 +12,7 @@ typedef struct {
     int year;
     uint8_t channel_a;
     uint8_t channel_b;
+    reader_info_t* reader;
 } arguments_t;
 
 void args_parse(int argc, char* argv[], arguments_t* arguments);

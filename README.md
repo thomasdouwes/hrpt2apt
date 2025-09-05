@@ -27,15 +27,15 @@ make
 ### run
 SatDump format (defaults to channels 2/4)
 ```
-./hrpt2apt -i "noaa_hrpt.raw" -r apt.dat
+./hrpt2apt -R raw16 -i "noaa_hrpt.raw" -r apt.dat
 ```
 or with 1/2 channels selected
 ```
-./hrpt2apt -i "noaa_hrpt.raw" -r apt.dat -a ch1 -b ch2
+./hrpt2apt -R raw16 -i "noaa_hrpt.raw" -r apt.dat -a ch1 -b ch2
 ```
 or dundee format
 ```
-./hrpt2apt -i "NOAA-15.dat" -r apt.dat -d
+./hrpt2apt -R dundee -i "NOAA-15.dat" -r apt.dat -d
 ```
 
 ### using imagemagick to get PNG
